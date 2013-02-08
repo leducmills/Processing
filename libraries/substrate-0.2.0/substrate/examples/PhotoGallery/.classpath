@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/Users/dwicks/Code/java/processing/core.jar"/>
+	<classpathentry kind="lib" path="/Users/dwicks/Documents/Processing/libraries/jellyspeaker/library/jelly-standalone-0.1.jar"/>
+	<classpathentry kind="lib" path="/Users/dwicks/Documents/Processing/libraries/jellyspeaker/library/jellyspeaker.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

@@ -1,0 +1,35 @@
+// different colors for each horse
+color c[]= {
+  color(0,225,0),
+  color(255,0,0),
+  color(0,0,255),
+  color(255,255,0),
+  color(255,150,0),
+  color(150,10,20), 
+  color(236,4,251),
+  color(4,27,251),
+  color(4,251,0),
+  color(40,251,180),
+
+  color(255,251,4),
+  color(251,97,4), 
+  color(220,65,79),
+  color(200,65,220),
+  color(65,98,220),
+  color(65,220,218),
+  color(65,220,87),
+  color(182,220,65),
+  color(220,130,65),
+  color(93,20,34),
+
+  color(93,20,84),
+  color(28,128,127),
+  color(28,128,66),
+  color(128,54,28),
+  color(171,7,165),
+  color(186,252,190),
+  color(171,34,7),
+  color(252,243,186),
+  color(252,206,186),
+  color(252,186,242)
+};
