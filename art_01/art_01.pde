@@ -19,7 +19,7 @@ void setup() {
   x = random(-300, 300);
   y = random(-300, 300);
   z = 0;
-  beginRaw(PDF, selectOutput());
+ // beginRaw(PDF, selectOutput());
 }
 
 void draw() {

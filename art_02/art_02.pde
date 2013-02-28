@@ -8,18 +8,19 @@ float y;
 float z;
 
 float cycles;
+int offset = 13;
 
 void setup() {
 
   background(255);
   noFill();
   //stroke(0);
-  size(1440, 960, P3D);
+  size(1400, 700, P3D);
   //size(900,150,P3D);
   x = random(-300, 300);
   y = random(-300, 300);
   z = 0;
-  beginRaw(PDF, selectOutput());
+  beginRaw(PDF, "test.pdf");
 }
 
 void draw() {
@@ -37,7 +38,7 @@ void draw() {
 
   frameRate(15);
 
-  cycles = random(3, 100);
+  cycles = random(5, 15);
   translate(width/2, height/2, 0);
   pushMatrix();
   //background(255);
@@ -53,12 +54,13 @@ void draw() {
     vertex(x, y, z);
     
 
-    if( (screenX(x,y,z) < 0 || screenX(x,y,z) > width) || (screenY(x,y,z) < 0 || y > height)) {
-      
+    if( (screenX(x,y,z)-50 < 0 || screenX(x,y,z)+50 > width) || (screenY(x,y,z)-50 < 0 || screenY(x,y,z)+50 > height)) {
+      x = 0;
+      y = 0;
     }
     else {
-    x += random(-10, 10);    
-    y += random(-10, 10);
+    x += random(-offset, offset);    
+    y += random(-offset, offset);
     }
     
   }
@@ -85,6 +87,8 @@ void keyPressed() {
   }
   if (key == 's') {
     //doSave = true;
+    endRaw();
+    beginRaw(PDF, "test.pdf");
     background(255);
   }
   if (key == 'q') {
@@ -93,21 +97,21 @@ void keyPressed() {
   }
   if (key == CODED) {
     if (keyCode == UP) {
-      z -= 100;
-      y -= 100;
+      //z -= 100;
+      y -= 50;
       println(y);
     }
     if (keyCode == DOWN) {
-      z += 100;
-      y +=100;
+      //z += 100;
+      y +=50;
       println(y);
     }
     if (keyCode == RIGHT) {
-      x += 100;
+      x += 50;
       println(x);
     }
     if (keyCode == LEFT) {
-      x -= 100;
+      x -= 50;
       println(x);
     }
   }

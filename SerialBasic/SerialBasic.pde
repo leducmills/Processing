@@ -13,6 +13,7 @@ boolean firstContact = false;
 
 void setup() {
 
+  println(Serial.list());
   //  initialize your serial port: 
   //  this code picks the first port in the array of available ports,
   //   and sets the baud rate to 9600

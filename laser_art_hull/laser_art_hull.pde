@@ -45,7 +45,7 @@ public void draw() {
   background(255);
 
   if (doSave) {
-    PGraphicsPDF pdf = (PGraphicsPDF)beginRaw(PDF, selectOutput()); 
+    PGraphicsPDF pdf = (PGraphicsPDF)beginRaw(PDF, selectOutput("Select a file to write to:", "fileSelected")); 
     // set default Illustrator stroke styles and paint background rect.
     pdf.strokeJoin(MITER);
     pdf.strokeCap(SQUARE);
@@ -191,6 +191,14 @@ void keyPressed() {
   }
   if(key == '0') {
     h10.refresh();
+  }
+}
+
+void fileSelected(File selection) {
+  if (selection == null) {
+    println("Window was closed or the user hit cancel.");
+  } else {
+    println("User selected " + selection.getAbsolutePath());
   }
 }
 
