@@ -8,7 +8,7 @@ float y;
 float z;
 
 float cycles;
-int offset = 13;
+int offset = 23;
 
 void setup() {
 
@@ -20,7 +20,7 @@ void setup() {
   x = random(-300, 300);
   y = random(-300, 300);
   z = 0;
-  beginRaw(PDF, "test.pdf");
+  beginRaw(PDF, "test3.pdf");
 }
 
 void draw() {
@@ -83,6 +83,7 @@ void keyPressed() {
 //    y = random(-300, 300);
     x = 0;
     y = 0;
+    background(255);
     println(x + " " + y);
   }
   if (key == 's') {

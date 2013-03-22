@@ -9,7 +9,7 @@ int index = 0;
 Serial port;
 
 long lastComm = 0;
-long commDelay = 500;
+long commDelay = 1500;
 
 void setup() {
   size(300, 300);
