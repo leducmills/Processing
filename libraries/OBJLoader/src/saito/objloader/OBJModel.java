@@ -46,7 +46,7 @@ public class OBJModel {
 
 	private String name = "default";
 
-	private String defaultMaterialName = "chicken";
+	private String defaultMaterialName = "default";
 
 	private Group defaultGroup = new Group("default");
 	private Segment defaultSegment = new Segment();
@@ -59,7 +59,7 @@ public class OBJModel {
 	// POINTS ..)
 
 	private boolean useTexture = true;
-	private boolean useMaterial = false;
+	private boolean useMaterial = true;
 
 	public static String RELATIVE = "relative";
 	public static String ABSOLUTE = "absolute";
@@ -136,7 +136,7 @@ public class OBJModel {
 		materials = new Hashtable<String, Material>();
 
 		debug = new Debug(parent);
-		//debug.enabled = true;
+		debug.enabled = true;
 	}
 
 	/**
@@ -318,8 +318,6 @@ public class OBJModel {
 		debug.println("Vn Size: \t\t" + normalVertices.size());
 		debug.println("G  Size: \t\t" + groups.size());
 		debug.println("S  Size: \t\t" + getSegmentCount());
-		debug.println("M Size: \t\t" + materials.size());
-		
 		debug.println("");
 	}
 
@@ -331,8 +329,8 @@ public class OBJModel {
 	public void enableDebug() {
 		debug.enabled = true;
 		debug.println("");
-		debug.println("objloader version 023");
-		debug.println("12 December 2010");
+		debug.println("objloader version 021");
+		debug.println("18 August 2010");
 		debug.println("http://code.google.com/p/saitoobjloader/");
 		debug.println("");
 	}
@@ -493,59 +491,49 @@ public class OBJModel {
 
 			Segment tmpModelSegment;
 			Face tmpModelElement;
-			
-			parent.textureMode(PConstants.NORMAL);
 
 			// render all triangles
 			for (int s = 0; s < getSegmentCount(); s++) {
 
 				tmpModelSegment = segments.get(s);
-				
+
 				tmpMaterial = materials.get(tmpModelSegment.materialName);
 
 				// if the material is not assigned for some
 				// reason, it uses the default material setting
-				if (tmpMaterial == null) 
-				{
+				if (tmpMaterial == null) {
 					tmpMaterial = materials.get(defaultMaterialName);
 
 					debug.println("Material '" + tmpModelSegment.materialName + "' not defined");
-					
-					//useTexture = false;
 				}
 
 				if (useMaterial) {
-					parent.ambient(	255.0f * tmpMaterial.Ka[0], 255.0f * tmpMaterial.Ka[1], 255.0f * tmpMaterial.Ka[2]);
+					parent.ambient(255.0f * tmpMaterial.Ka[0], 255.0f * tmpMaterial.Ka[1], 255.0f * tmpMaterial.Ka[2]);
 					parent.specular(255.0f * tmpMaterial.Ks[0], 255.0f * tmpMaterial.Ks[1], 255.0f * tmpMaterial.Ks[2]);
-					parent.fill(	255.0f * tmpMaterial.Kd[0], 255.0f * tmpMaterial.Kd[1], 255.0f * tmpMaterial.Kd[2], 255.0f * tmpMaterial.d);
+					parent.fill(255.0f * tmpMaterial.Kd[0], 255.0f * tmpMaterial.Kd[1], 255.0f * tmpMaterial.Kd[2], 255.0f * tmpMaterial.d);
 				}
 
-				for (int f = 0; f < tmpModelSegment.getFaceCount(); f++) 
-				{
+				for (int f = 0; f < tmpModelSegment.getFaceCount(); f++) {
 					tmpModelElement = (tmpModelSegment.getFace(f));
 
-					if (tmpModelElement.getVertIndexCount() > 0) 
-					{
+					if (tmpModelElement.getVertIndexCount() > 0) {
 
+						parent.textureMode(PConstants.NORMAL);
 						parent.beginShape(drawMode); // specify render mode
-						
-						if (tmpMaterial.map_Kd == null){
+						if (useTexture == false || tmpMaterial.map_Kd == null)
 							useTexture = false;
-						}
 
 						if (useTexture) {
 							if (texture != null)
 								parent.texture(texture);
-							else{
-								parent.texture(tmpMaterial.map_Kd);
-							}
+							else
+								parent.texture(tmpMaterial.map_Kd); 
 						}
 
 						for (int fp = 0; fp < tmpModelElement.getVertIndexCount(); fp++) {
 							v = vertices.get(tmpModelElement.getVertexIndex(fp));
 
-							if (v != null) 
-							{
+							if (v != null) {
 								try {
 									if (tmpModelElement.normalIndices.size() > 0) {
 										vn = normalVertices.get(tmpModelElement.getNormalIndex(fp));
@@ -566,11 +554,9 @@ public class OBJModel {
 
 						parent.endShape();
 
+						parent.textureMode(PConstants.IMAGE);
 					}
 				}
-				
-				parent.textureMode(PConstants.IMAGE);
-
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -760,11 +746,12 @@ public class OBJModel {
 			Group currentGroup = defaultGroup;
 			String currentMaterial = defaultMaterialName;
 
-			// ?? This was removed because I'm pretty sure it's rubbish and isn't needed.
 			// creating the default material
 			Material defaultMaterial = new Material();
 			defaultMaterial.mtlName = defaultMaterialName;
+
 			materials.put(defaultMaterialName, defaultMaterial);
+
 			defaultSegment.materialName = currentMaterial;
 
 			// creating the default model segment
@@ -822,13 +809,8 @@ public class OBJModel {
 						if (elements[1] != null)
 							name = elements[1];
 					} else if (elements[0].equals("mtllib")) {
-						if (elements[1] != null){
-							
-							useMaterial = true;
-							
+						if (elements[1] != null)
 							this.parseMTL(this.getBufferedReader(elements[1]));
-							
-						}
 					} else if (elements[0].equals("g")) {
 						// grouping setting
 						debug.println("found group");
@@ -839,8 +821,6 @@ public class OBJModel {
 
 						currentModelSegment = newModelSegment;
 						currentModelSegment.materialName = currentMaterial;
-						
-						useMaterial = true;
 
 						for (int e = 1; e < elements.length; e++) {
 							if (groups.get(elements[e]) == null) {
@@ -858,11 +838,6 @@ public class OBJModel {
 
 						currentModelSegment = newModelSegment;
 						currentModelSegment.materialName = elements[1];
-						
-						currentMaterial = elements[1];
-						
-						useMaterial = true;
-						
 					} else if (elements[0].equals("f")) {
 						// face setting
 						Face f = new Face();
@@ -875,23 +850,37 @@ public class OBJModel {
 
 							if (seg.indexOf("/") > 0) 
 							{
-								String[] faceOrder = seg.split("/");
+								String[] forder = seg.split("/");
 
-								if (faceOrder.length > 0) {
-									f.vertexIndices.add(Integer.valueOf(faceOrder[0]));
-								}
-
-								if (faceOrder.length > 1) {
-									if(faceOrder[1].length() > 0){
-										// this is allow for a mesh with no uv's but has normals
-										// Yep. it's in the spec.
-										f.uvIndices.add(Integer.valueOf(faceOrder[1]));
+//								if (forder.length > 2) {
+									if (forder[0].length() > 0) {
+										f.vertexIndices.add(Integer.valueOf(forder[0]));
 									}
-								}
 
-								if (faceOrder.length > 2) {
-									f.normalIndices.add(Integer.valueOf(faceOrder[2]));
-								}
+									if (forder[1].length() > 0) {
+										f.uvIndices.add(Integer.valueOf(forder[1]));
+									}
+
+									if (forder[2].length() > 0) {
+										f.normalIndices.add(Integer.valueOf(forder[2]));
+									}
+//								}
+//								else if (forder.length > 1) 
+//								{
+//									if (forder[0].length() > 0) {
+//										f.vertexIndices.add(Integer.valueOf(forder[0]));
+//									}
+//
+//									if (forder[1].length() > 0) {
+//										f.uvIndices.add(Integer.valueOf(forder[1]));
+//									}
+//								} 
+//								else if (forder.length > 0) 
+//								{
+//									if (forder[0].length() > 0) {
+//										f.vertexIndices.add(Integer.valueOf(forder[0]));
+//									}
+//								}
 							}
 							else 
 							{
@@ -919,12 +908,10 @@ public class OBJModel {
 				}
 			}
 
-			for (int i = 0; i < getSegmentCount(); i++) 
-			{
+			for (int i = 0; i < getSegmentCount(); i++) {
 				Segment s = segments.get(i);
 
-				for (int j = 0; j < s.getFaceCount(); j++) 
-				{
+				for (int j = 0; j < s.getFaceCount(); j++) {
 					Face f = s.getFace(j);
 
 					int[] vtIndex = f.getVertexIndices();
@@ -978,11 +965,7 @@ public class OBJModel {
 	 */
 
 	private void parseMTL(BufferedReader bread) {
-		
-		if(bread == null)return;
-		
 		try {
-			
 			String line = "";
 
 			Material currentMtl = null;
@@ -1077,7 +1060,6 @@ public class OBJModel {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			useMaterial = false;
 		}
 	}
 

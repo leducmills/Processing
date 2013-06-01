@@ -4,7 +4,7 @@ import processing.core.*;
 
 public class Debug {
 
-	public boolean enabled = false;
+	public boolean enabled = true;
 
 	private PApplet parent;
 
@@ -38,6 +38,10 @@ public class Debug {
 			PApplet.println(v.x + " : " + v.y + " : " + v.z);
 	}
 
+	// public void println(Vertex v){
+	// if(enabled)
+	// PApplet.println(v.vx + " : " + v.vy + " : " + v.vz);
+	// }
 	public void print(String str) {
 		if (enabled)
 			PApplet.print(str);
