@@ -9,7 +9,7 @@ Serial myPort;
 
 void setup() {
   println(Serial.list());
-  myPort = new Serial(this, Serial.list()[0], 9600);
+  myPort = new Serial(this, Serial.list()[4], 9600);
   size(600,600);
 }
 
