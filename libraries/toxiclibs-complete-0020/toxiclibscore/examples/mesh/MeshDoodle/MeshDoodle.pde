@@ -32,6 +32,8 @@
 import toxi.geom.*;
 import toxi.geom.mesh.*;
 
+import java.util.Iterator;
+
 TriangleMesh mesh=new TriangleMesh("doodle");
 
 Vec3D prev=new Vec3D();
@@ -94,7 +96,7 @@ void keyPressed() {
   if (key=='s') {
     //mesh.saveAsOBJ(sketchPath("doodle.obj"));
     //mesh.saveAsSTL(sketchPath("doodle.stl"));
-    mesh.saveAsSTL(selectOutput());
+    //mesh.saveAsSTL(selectOutput());
   } 
   else {
     mesh.clear();

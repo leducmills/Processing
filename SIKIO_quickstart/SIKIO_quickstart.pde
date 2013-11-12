@@ -32,7 +32,7 @@ void setup() {
   //start our thread
   thread1.start();
 
-  size(480, 800); 
+  //size(480, 800); 
   
   smooth();
   noStroke();

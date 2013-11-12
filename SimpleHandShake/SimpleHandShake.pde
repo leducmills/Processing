@@ -16,7 +16,7 @@ void setup() {
 
   size(200, 200); //make our canvas 200 x 200 pixels big
   //  initialize your serial port and set the baud rate to 9600
-  myPort = new Serial(this, Serial.list()[4], 9600);
+  myPort = new Serial(this, Serial.list()[4], 115200);
   myPort.bufferUntil('\n');
 }
 
@@ -43,7 +43,7 @@ void serialEvent( Serial myPort) {
     //look for our 'A' string to start the handshake
     //if it's there, clear the buffer, and send a request for data
     if (firstContact == false) {
-      if (val.equals("A")) {
+      if (val.equals("hello")) {
         myPort.clear();
         firstContact = true;
         myPort.write("A");

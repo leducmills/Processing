@@ -9,6 +9,7 @@ import toxi.geom.*;
 import toxi.geom.mesh.*;
 import toxi.processing.*;
 import controlP5.*;
+import java.util.Iterator.*;
 
 ControlP5 controlP5;
 Nav3D nav; // camera controller

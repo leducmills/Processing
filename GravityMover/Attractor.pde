@@ -8,7 +8,7 @@ class Attractor {
   
   location = new PVector(width/2, height/2);
   mass = 20;
-  G = .2;
+  G = .9;
    
  }
  

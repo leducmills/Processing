@@ -35,7 +35,7 @@ void setup() {
   myFont = createFont("FFScala", 16);
   textFont(myFont);
   println(Serial.list()); //list serial ports
-  myPort = new Serial(this, Serial.list()[0], 115200); //init serial object (picks 1st port available)
+  myPort = new Serial(this, Serial.list()[4], 9600); //init serial object (picks 1st port available)
   myPort.bufferUntil('\n');
   leftPaddle = new Paddle(padWidth, padHeight, distWall, leftPaddlePos); //init right paddle (width, height, x, y)
   rightPaddle = new Paddle(padWidth, padHeight, width - distWall, rightPaddlePos); //init left paddle
@@ -94,8 +94,12 @@ void serialEvent(Serial myPort) {
         //println(lpp);
         
         //adjust these mapping functions to fit the sensors values you're receiving 
-        lpp = map(lpp, 0, 1023, 1, height);
-        rpp =  map(rpp, 0, 1023, 1, height); //flex sensor
+//        lpp = map(lpp, 0, 1023, 1, height);
+//        rpp =  map(rpp, 0, 1023, 1, height); //flex sensor
+        
+         lpp = map(lpp, 0, 255, 1, height);
+        //rpp = map(rpp, 500, 900, 1, height);  //photocell
+        rpp = map(rpp, 0, 255, 1, height); //soft pot
 
           
        
