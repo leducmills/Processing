@@ -1,4 +1,9 @@
-/*  CameraSurfaceView class courtesy ofAK Eric (Eric Pavey) http://www.akeric.com/blog/?p=1342 */
+/* 
+  SparkFun SIKIO - Circuit 7
+  CC BY-SA, http://creativecommons.org/licenses/by-sa/3.0/
+*/
+
+/*  CameraSurfaceView class courtesy of AK Eric (Eric Pavey) http://www.akeric.com/blog/?p=1342 */
 
 class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Callback, Camera.PreviewCallback {
   // Object that accesses the camera, and updates our image data
@@ -26,6 +31,15 @@ class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Callback, C
     // camera's preview callback, which will fire on each frame of preview:
     cam = Camera.open();
     cam.setPreviewCallback(this);
+    
+   
+//   //uncomment this section if your code uploads correctly but all you see is a blank/white screen
+   try {
+      cam.setPreviewDisplay(holder);
+    } 
+    catch (Exception e) {
+    }
+    
 
     Camera.Parameters parameters = cam.getParameters();
     // Find our preview size, and init our global PImage:

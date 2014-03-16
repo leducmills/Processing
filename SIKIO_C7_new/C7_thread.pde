@@ -1,83 +1,27 @@
-class IOIOThread extends Thread {
+/* 
+  SparkFun SIKIO - Circuit 7
+  CC BY-SA, http://creativecommons.org/licenses/by-sa/3.0/
+*/
 
-  boolean running; //is our thread running?
-  String id; 
-  int wait;  //how often we want our thread to run
-  DigitalInput button; //our button is a DigitalInput
-  AnalogInput pot; //our potentiometer is an AnalogInput
-  int count;
-  int buttonPin = 8; //pin for our led
-  boolean buttonVal; //digital in is either 0 OR 1 (true or false)
+DigitalInput button; // Declare button as DigitalInput
+int buttonPin = 8; // Use pin 8 for our button
+boolean buttonVal; // Button value is digital, either 0 OR 1 (true or false)
 
+void ioioSetup(IOIO ioio) throws ConnectionLostException
+{
+  // Ready pin as digital input for button
+  button = ioio.openDigitalInput(buttonPin);
+} 
 
-  IOIOThread(String s, int w) {
-
-    id = s;
-    wait = w;
-    running = false;
-    count = 0;
+void ioioLoop(IOIO ioio) throws ConnectionLostException
+{
+  try
+  {
+    // Read external button every 100 ms
+    buttonVal = button.read();
+    Thread.sleep(100);
   }
-
-
-  void start() {
-    running = true;
-
-    try {
-      //connect to the IOIO
-      IOIOConnect();
-    } 
-    catch (ConnectionLostException e) {
-    }
-
-
-    try {
-      
-      //try opening our input pins
-      button = ioio.openDigitalInput(buttonPin);
-    } 
-    catch (ConnectionLostException e) {
-    }
-
-    //don't forget this!
-    super.start();
-  }
-
-  void run() {
-
-    while (running) {
-
-      try {
-        //while we're running, read our button values
-        buttonVal = button.read();
-      } 
-      catch (ConnectionLostException e) {
-      }
-      catch (InterruptedException e) {
-      }
-
-      try {
-        sleep((long)(wait));
-      } 
-      catch (Exception e) {
-      }
-    }
-  }
-
-  void quit() {
-    running = false;
-    //led.close();
-    ioio.disconnect();
-    interrupt();
-  }
-
-
-
-  void IOIOConnect() throws ConnectionLostException {
-
-    try {
-      ioio.waitForConnect();
-    }
-    catch (IncompatibilityException e) {
-    }
+  catch (InterruptedException e) 
+  {
   }
 }
